@@ -41,24 +41,31 @@ SRC_URI="
 RUST_MIN_VER="1.95.0"
 
 src_unpack() {
-    git-r3_src_unpack
-    cargo_live_src_unpack
+	git-r3_src_unpack
+	cargo_live_src_unpack
 }
 
 src_configure() {
-    cargo_src_configure \
-        -p kopuz \
-        -p kopuz-kopuzd \
-        -p kopuz-ctl
+	cargo_src_configure \
+		-p kopuz \
+		-p kopuz-kopuzd \
+		-p kopuz-ctl
 }
 
 src_compile() {
-    export RUSTY_V8_ARCHIVE="${DISTDIR}/${V8_DISTFILE}"
-    cargo_src_compile
+	export RUSTY_V8_ARCHIVE="${DISTDIR}/${V8_DISTFILE}"
+	cargo_src_compile
 }
 
 src_install() {
-    dobin "$(cargo_target_dir)/kopuz"
-    dobin "$(cargo_target_dir)/kopuzd"
-    dobin "$(cargo_target_dir)/kopuzctl"
+	dobin "$(cargo_target_dir)/kopuz"
+	dobin "$(cargo_target_dir)/kopuzd"
+	dobin "$(cargo_target_dir)/kopuzctl"
+
+	domenu data/moe.kopuz.kopuz.desktop
+
+	insinto /usr/share/metainfo
+	doins data/moe.kopuz.kopuz.metainfo.xml
+
+	newicon -s 256 packaging/kopuz-nightly/logo.png moe.kopuz.kopuz.png
 }
